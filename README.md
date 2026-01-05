@@ -55,10 +55,17 @@ pip install -r requirements.txt
 ```
 
 #### 4. Configure as variáveis de ambiente
-Crie um arquivo `.env` na raiz do projeto:
+Copie o arquivo `.env.example` e renomeie para `.env`:
+```bash
+cp .env.example .env
+```
+
+Edite o arquivo `.env` e adicione sua chave da OpenAI:
 ```bash
 OPENAI_API_KEY=sk-...sua-chave-aqui...
 ```
+
+**Nota**: As configurações do LangSmith são opcionais e podem ser deixadas como estão se você não for usar rastreamento.
 
 ### Executando a Aplicação
 
@@ -401,21 +408,18 @@ LangSmith é uma plataforma de observabilidade e debugging para aplicações Lan
 
 #### 2. Obter API Key
 
-1. Crie um novo projeto de rastremento
-2. Copie os valores das variáveis de ambiente disponibilizadas
+1. Crie um novo projeto de rastreamento no LangSmith
+2. Copie a chave de API gerada
 
 #### 3. Configurar Variáveis de Ambiente
 
-Adicione ao seu arquivo `.env`:
+As variáveis do LangSmith já estão pré-configuradas no arquivo `.env.example`. Edite seu arquivo `.env` e atualize os valores:
 
 ```bash
-# OpenAI
-OPENAI_API_KEY=sk-...
-
-# LangSmith
+# LangSmith (opcional - descomente e configure se desejar usar)
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
-LANGCHAIN_API_KEY=ls__...
+LANGCHAIN_API_KEY=ls__...sua-chave-langsmith-aqui...
 LANGCHAIN_PROJECT=banco-agil
 ```
 
