@@ -229,16 +229,6 @@ O sistema utiliza um estado centralizado definido em [src/core/state.py](src/cor
 
 **Solução**: Sistema de detecção de mudanças de estado (`state_changed`) que aciona `st.rerun()` automaticamente. Session state do Streamlit armazena cópia do `agent_state` que é atualizado após cada invoke do grafo.
 
-### 6. Testes de Fluxo Completo
-**Desafio**: Testar interações multi-agente end-to-end com mocks adequados.
-
-**Solução**: Uso de `pytest-mock` e `responses` para mockar chamadas de LLM e APIs externas. Fixtures reutilizáveis em [tests/conftest.py](tests/conftest.py). Testes de integração que validam transições entre agentes em [tests/integration/test_graph.py](tests/integration/test_graph.py).
-
-### 7. Gerenciamento de Dependências do LangGraph
-**Desafio**: Integrar LangGraph CLI para desenvolvimento local sem conflitos de versão.
-
-**Solução**: Uso de `langgraph-cli[inmem]` no requirements.txt para incluir servidor de desenvolvimento em memória. Configuração via `langgraph.json` apontando para o grafo principal. Variáveis de ambiente gerenciadas por `python-dotenv`.
-
 ---
 
 ## Escolhas Técnicas e Justificativas
