@@ -1,0 +1,31 @@
+services:
+  banco-agil:
+    build: .
+    container_name: banco-agil-app
+    ports:
+      - "8501:8501"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2:-false}
+      - LANGCHAIN_ENDPOINT=${LANGCHAIN_ENDPOINT:-https://api.smith.langchain.com}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY:-}
+      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT:-banco-agil}
+    volumes:
+      # Persiste dados entre restarts
+      - ./data:/app/data
+      # Hot reload para desenvolvimento (comentar em produção)
+      - ./src:/app/src
+      - ./app_streamlit.py:/app/app_streamlit.py
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - banco-agil-network
+
+networks:
+  banco-agil-network:
+    driver: bridge

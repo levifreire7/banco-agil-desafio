@@ -1,0 +1,19 @@
+langgraph
+langchain-openai
+langchain-core
+openai
+python-dotenv
+pydantic
+pydantic-settings
+requests
+pandas
+langgraph-cli[inmem]
+streamlit
+
+# Dependências de teste
+pytest
+pytest-asyncio
+pytest-mock
+pytest-cov
+responses
+freezegun
