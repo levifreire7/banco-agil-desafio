@@ -32,7 +32,7 @@ CREDITO_AUMENTO_APROVADO = AIMessage(
 
 CREDITO_AUMENTO_REJEITADO = AIMessage(
     content="Solicitação rejeitada. Seu score atual (350) não permite este limite.\n\n"
-            "Posso encaminhá-lo para uma entrevista de crédito que pode melhorar seu score. "
+            "Temos uma entrevista de crédito que pode aumentar suas chances de melhorar o score."
             "Deseja fazer a entrevista?"
 )
 

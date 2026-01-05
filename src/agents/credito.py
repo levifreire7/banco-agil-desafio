@@ -74,7 +74,7 @@ Cliente autenticado: {nome}
                         else:
                             response = AIMessage(
                                 content=result["mensagem"] + "\n\n" +
-                                "Posso encaminhá-lo para uma entrevista de crédito que pode melhorar seu score. "
+                                "Temos uma entrevista de crédito que pode aumentar suas chances de melhorar o score. "
                                 "Deseja fazer a entrevista?"
                             )
 
