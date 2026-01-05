@@ -346,13 +346,27 @@ Os arquivos CSV devem estar em `data/`:
 
 ### Executando a Aplicação
 
-#### Interface Streamlit (Recomendado)
+#### Opção 1: Interface Streamlit (Local)
 ```bash
 streamlit run app_streamlit.py
 ```
 Acesse: http://localhost:8501
 
-#### LangGraph Studio (Desenvolvimento)
+#### Opção 2: Docker (Recomendado)
+```bash
+# Inicie o container
+docker-compose up -d
+
+# Verifique os logs
+docker-compose logs -f banco-agil
+
+# Acesse: http://localhost:8501
+
+# Parar o container
+docker-compose down
+```
+
+#### Opção 3: LangGraph Studio (Desenvolvimento)
 ```bash
 langgraph dev
 ```
@@ -386,6 +400,11 @@ pytest tests/integration/ -v
 pytest tests/unit/test_tools_autenticacao.py::test_autenticar_cliente_sucesso -v
 ```
 
+#### Executar testes no Docker
+```bash
+docker-compose exec banco-agil pytest -v
+```
+
 ### Resultados Esperados
 
 ```
@@ -401,152 +420,6 @@ tests/integration/test_graph.py::test_fluxo_completo_credito PASSED
 [...]
 
 ====================== 92 passed, 1 skipped in 12.45s ===============
-```
-
----
-
-## Execução com Docker
-
-### Por que Docker?
-
-- **Consistência**: Ambiente idêntico em desenvolvimento e produção
-- **Isolamento**: Não interfere com pacotes do sistema
-- **Portabilidade**: Funciona em qualquer SO com Docker
-- **Reprodutibilidade**: Garante mesmas versões de dependências
-
-### Dockerfile
-
-Crie um arquivo `Dockerfile` na raiz do projeto:
-
-```dockerfile
-# Imagem base Python
-FROM python:3.11-slim
-
-# Define diretório de trabalho
-WORKDIR /app
-
-# Instala dependências do sistema
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copia arquivos de dependências
-COPY requirements.txt .
-
-# Instala dependências Python
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copia código da aplicação
-COPY . .
-
-# Expõe porta do Streamlit
-EXPOSE 8501
-
-# Comando padrão: inicia Streamlit
-CMD ["streamlit", "run", "app_streamlit.py", "--server.address", "0.0.0.0"]
-```
-
-### Docker Compose
-
-Crie um arquivo `docker-compose.yml`:
-
-```yaml
-version: '3.8'
-
-services:
-  banco-agil:
-    build: .
-    container_name: banco-agil-app
-    ports:
-      - "8501:8501"
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    volumes:
-      - ./data:/app/data
-      - ./src:/app/src
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-```
-
-### Construindo e Executando
-
-#### 1. Crie o arquivo .env
-```bash
-echo "OPENAI_API_KEY=sk-sua-chave-aqui" > .env
-```
-
-#### 2. Construa a imagem
-```bash
-docker-compose build
-```
-
-#### 3. Inicie o container
-```bash
-docker-compose up -d
-```
-
-#### 4. Verifique os logs
-```bash
-docker-compose logs -f banco-agil
-```
-
-#### 5. Acesse a aplicação
-```
-http://localhost:8501
-```
-
-### Comandos Úteis
-
-#### Parar o container
-```bash
-docker-compose down
-```
-
-#### Reiniciar
-```bash
-docker-compose restart
-```
-
-#### Ver status
-```bash
-docker-compose ps
-```
-
-#### Executar testes no container
-```bash
-docker-compose exec banco-agil pytest -v
-```
-
-#### Acessar shell do container
-```bash
-docker-compose exec banco-agil /bin/bash
-```
-
-#### Reconstruir após mudanças
-```bash
-docker-compose up -d --build
-```
-
-### Variações de Deploy
-
-#### Apenas build da imagem
-```bash
-docker build -t banco-agil:latest .
-docker run -p 8501:8501 --env-file .env banco-agil:latest
-```
-
-#### Com volume para desenvolvimento
-```bash
-docker run -p 8501:8501 \
-  -v $(pwd)/src:/app/src \
-  -v $(pwd)/data:/app/data \
-  --env-file .env \
-  banco-agil:latest
 ```
 
 ---
