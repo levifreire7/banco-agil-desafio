@@ -16,7 +16,7 @@ O **Banco Ágil** é uma solução completa de atendimento bancário que utiliza
 - **Autenticação Segura**: Sistema de validação com controle de tentativas
 - **Processamento Inteligente de Crédito**: Análise automatizada baseada em score
 - **Interface Web Interativa**: Interface Streamlit moderna e responsiva
-- **Cobertura de Testes**: 99 testes automatizados com pytest
+- **Cobertura de Testes**: testes automatizados com pytest
 
 ---
 
@@ -292,7 +292,7 @@ O sistema utiliza um estado centralizado definido em [src/core/state.py](src/cor
 - Sintaxe clara e mensagens de erro informativas
 
 **Como se encaixa?**
-- 99 testes cobrindo unidade, integração e E2E
+- testes cobrindo unidade e integração
 - Mocks de LLM garantem testes determinísticos e rápidos
 - Fixtures em `conftest.py` compartilhadas entre módulos
 
@@ -402,7 +402,7 @@ pytest tests/unit/test_tools_autenticacao.py::test_autenticar_cliente_sucesso -v
 
 ```
 ======================== test session starts =========================
-collected 99 items
+collected 92 items
 
 tests/unit/test_database.py::test_buscar_cliente_existente PASSED
 tests/unit/test_database.py::test_buscar_cliente_inexistente PASSED
@@ -412,7 +412,7 @@ tests/integration/test_agents.py::test_triagem_autenticacao_completa PASSED
 tests/integration/test_graph.py::test_fluxo_completo_credito PASSED
 [...]
 
-====================== 99 passed, 1 skipped in 12.45s ===============
+====================== 92 passed, 1 skipped in 12.45s ===============
 ```
 
 ---
