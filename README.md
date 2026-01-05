@@ -20,6 +20,87 @@ O **Banco Ágil** é uma solução completa de atendimento bancário que utiliza
 
 ---
 
+## Tutorial de Execução e Testes
+
+### Pré-requisitos
+
+- Python 3.11 ou superior
+- pip (gerenciador de pacotes Python)
+- Git (opcional, para clonar repositório)
+- Chave de API da OpenAI
+- Docker e Docker Compose (para execução em container)
+
+### Instalação Local
+
+#### 1. Clone o repositório
+```bash
+git clone <url-do-repositorio>
+cd banco-agil-desafio
+```
+
+#### 2. Crie um ambiente virtual
+```bash
+# Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
+
+# Windows
+python -m venv venv
+venv\Scripts\activate
+```
+
+#### 3. Instale as dependências
+```bash
+pip install -r requirements.txt
+```
+
+#### 4. Configure as variáveis de ambiente
+Crie um arquivo `.env` na raiz do projeto:
+```bash
+OPENAI_API_KEY=sk-...sua-chave-aqui...
+```
+
+### Executando a Aplicação
+
+#### Opção 1: Interface Streamlit (Local)
+```bash
+streamlit run app_streamlit.py
+```
+Acesse: http://localhost:8501
+
+#### Opção 2: Docker
+```bash
+# Inicie o container
+docker-compose up -d
+
+# Verifique os logs
+docker-compose logs -f banco-agil
+
+# Acesse: http://localhost:8501
+
+# Parar o container
+docker-compose down
+```
+
+#### Opção 3: LangGraph Studio (Desenvolvimento)
+```bash
+langgraph dev
+```
+Acesse: http://localhost:8123
+
+### Executando Testes
+
+#### Todos os testes
+```bash
+pytest -v
+```
+
+#### Executar testes no Docker
+```bash
+docker-compose exec banco-agil pytest -v
+```
+---
+
 ## Arquitetura do Sistema
 
 ### Diagrama do Grafo de Fluxo
@@ -298,132 +379,6 @@ O sistema utiliza um estado centralizado definido em [src/core/state.py](src/cor
 
 ---
 
-## Tutorial de Execução e Testes
-
-### Pré-requisitos
-
-- Python 3.11 ou superior
-- pip (gerenciador de pacotes Python)
-- Git (opcional, para clonar repositório)
-- Chave de API da OpenAI
-- Docker e Docker Compose (para execução em container)
-
-### Instalação Local
-
-#### 1. Clone o repositório
-```bash
-git clone <url-do-repositorio>
-cd banco-agil-desafio
-```
-
-#### 2. Crie um ambiente virtual
-```bash
-# Linux/Mac
-python3 -m venv venv
-source venv/bin/activate
-
-# Windows
-python -m venv venv
-venv\Scripts\activate
-```
-
-#### 3. Instale as dependências
-```bash
-pip install -r requirements.txt
-```
-
-#### 4. Configure as variáveis de ambiente
-Crie um arquivo `.env` na raiz do projeto:
-```bash
-OPENAI_API_KEY=sk-...sua-chave-aqui...
-```
-
-#### 5. Verifique a estrutura de dados
-Os arquivos CSV devem estar em `data/`:
-- `data/clientes.csv`
-- `data/score_limite.csv`
-- `data/solicitacoes_aumento_limite.csv`
-
-### Executando a Aplicação
-
-#### Opção 1: Interface Streamlit (Local)
-```bash
-streamlit run app_streamlit.py
-```
-Acesse: http://localhost:8501
-
-#### Opção 2: Docker (Recomendado)
-```bash
-# Inicie o container
-docker-compose up -d
-
-# Verifique os logs
-docker-compose logs -f banco-agil
-
-# Acesse: http://localhost:8501
-
-# Parar o container
-docker-compose down
-```
-
-#### Opção 3: LangGraph Studio (Desenvolvimento)
-```bash
-langgraph dev
-```
-Acesse: http://localhost:8123
-
-### Executando Testes
-
-#### Todos os testes
-```bash
-pytest -v
-```
-
-#### Com cobertura de código
-```bash
-pytest --cov=src --cov-report=html -v
-```
-Relatório em: `htmlcov/index.html`
-
-#### Apenas testes unitários
-```bash
-pytest tests/unit/ -v
-```
-
-#### Apenas testes de integração
-```bash
-pytest tests/integration/ -v
-```
-
-#### Teste específico
-```bash
-pytest tests/unit/test_tools_autenticacao.py::test_autenticar_cliente_sucesso -v
-```
-
-#### Executar testes no Docker
-```bash
-docker-compose exec banco-agil pytest -v
-```
-
-### Resultados Esperados
-
-```
-======================== test session starts =========================
-collected 92 items
-
-tests/unit/test_database.py::test_buscar_cliente_existente PASSED
-tests/unit/test_database.py::test_buscar_cliente_inexistente PASSED
-tests/unit/test_tools_autenticacao.py::test_autenticar_cliente_sucesso PASSED
-tests/unit/test_tools_credito.py::test_consultar_limite_sucesso PASSED
-tests/integration/test_agents.py::test_triagem_autenticacao_completa PASSED
-tests/integration/test_graph.py::test_fluxo_completo_credito PASSED
-[...]
-
-====================== 92 passed, 1 skipped in 12.45s ===============
-```
-
----
-
 ## Configuração e Uso do LangSmith
 
 ### O que é LangSmith?
@@ -446,12 +401,8 @@ LangSmith é uma plataforma de observabilidade e debugging para aplicações Lan
 
 #### 2. Obter API Key
 
-1. No dashboard, clique no ícone de usuário (canto superior direito)
-2. Selecione "Settings"
-3. Navegue até "API Keys"
-4. Clique em "Create API Key"
-5. Dê um nome (ex: "Banco Ágil Dev")
-6. Copie a chave gerada (ex: `ls__...`)
+1. Crie um novo projeto de rastremento
+2. Copie os valores das variáveis de ambiente disponibilizadas
 
 #### 3. Configurar Variáveis de Ambiente
 
@@ -474,38 +425,7 @@ LANGCHAIN_PROJECT=banco-agil
 - `LANGCHAIN_API_KEY`: Sua chave de API
 - `LANGCHAIN_PROJECT`: Nome do projeto (organiza traces)
 
-#### 4. Atualizar Código (Opcional)
-
-O LangGraph já envia traces automaticamente quando as variáveis estão configuradas. Mas você pode adicionar metadados customizados:
-
-```python
-# src/core/graph.py
-import os
-from langsmith import Client
-
-# Inicializar cliente (opcional, para metadados)
-ls_client = Client() if os.getenv("LANGCHAIN_TRACING_V2") == "true" else None
-
-def create_graph(openai_api_key: str):
-    # ... código existente ...
-
-    workflow = StateGraph(AgentState)
-    # ... adicionar nós e edges ...
-
-    graph = workflow.compile()
-
-    # Adicionar metadados ao grafo
-    if ls_client:
-        graph.metadata = {
-            "project": "banco-agil",
-            "version": "1.0.0",
-            "description": "Sistema Multi-Agente Bancário"
-        }
-
-    return graph
-```
-
-#### 5. Executar Aplicação com Rastreamento
+#### 4. Executar Aplicação com Rastreamento
 
 ```bash
 # Certifique-se de que o .env está configurado
@@ -519,165 +439,9 @@ Todas as execuções serão automaticamente enviadas ao LangSmith.
 #### Visualizar Traces
 
 1. Acesse: https://smith.langchain.com/
-2. No menu lateral, clique em "Projects"
-3. Selecione "banco-agil"
+2. No menu lateral, clique em "Tracing"
+3. Selecione o projeto que você criou
 4. Você verá lista de todas as execuções (runs)
-
-#### Analisar uma Execução
-
-Clique em qualquer run para ver:
-
-**Timeline:**
-- Sequência de chamadas aos agentes
-- Tempo de cada etapa
-- Transições entre nós do grafo
-
-**Input/Output:**
-- Mensagem do usuário (input)
-- Resposta final (output)
-- Estado intermediário
-
-**LLM Calls:**
-- Prompts enviados ao GPT-4
-- Respostas geradas
-- Tokens utilizados
-- Custo estimado
-
-**Tools:**
-- Ferramentas invocadas
-- Argumentos passados
-- Resultados retornados
-
-#### Debugging de Fluxo
-
-**Cenário**: Usuário não foi redirecionado corretamente para agente de crédito.
-
-1. Encontre o run problemático na lista
-2. Abra a visualização em árvore
-3. Localize o nó "triagem"
-4. Verifique:
-   - System prompt enviado
-   - Resposta do LLM
-   - Valor de `pending_redirect` no estado
-5. Identifique se o problema é:
-   - Prompt ambíguo
-   - LLM não detectou intenção
-   - Conditional edge não funcionou
-
-#### Analisar Custos
-
-1. Na página do projeto, veja gráfico de custos
-2. Filtre por período (última hora, dia, semana)
-3. Identifique agentes mais caros
-4. Otimize prompts longos ou chamadas redundantes
-
-#### Comparar Versões de Prompt
-
-1. Crie dois runs com prompts diferentes
-2. Selecione ambos (Ctrl+Click)
-3. Clique em "Compare"
-4. Analise diferenças em:
-   - Taxa de sucesso
-   - Tempo de resposta
-   - Custo
-   - Qualidade das respostas
-
-### Filtros Úteis
-
-#### Por Agente
-```
-metadata.agent_name = "triagem"
-```
-
-#### Por Status
-```
-status = "success"
-status = "error"
-```
-
-#### Por Duração
-```
-latency > 5s
-```
-
-#### Por Usuário (se adicionar ao metadata)
-```
-metadata.user_id = "12345"
-```
-
-### Monitoramento em Produção
-
-#### 1. Criar Projeto de Produção
-
-No LangSmith, crie projeto separado "banco-agil-prod":
-
-```bash
-# .env.production
-LANGCHAIN_PROJECT=banco-agil-prod
-```
-
-#### 2. Configurar Alertas
-
-1. Vá em "Settings" do projeto
-2. Ative "Alerts"
-3. Configure notificações para:
-   - Taxa de erro > 5%
-   - Latência média > 10s
-   - Custo diário > $X
-
-#### 3. Dashboard Personalizado
-
-1. Crie dataset de teste
-2. Configure avaliações automáticas
-3. Monitore métricas customizadas
-
-### Integração com Docker
-
-Adicione variáveis ao `docker-compose.yml`:
-
-```yaml
-services:
-  banco-agil:
-    # ... configurações existentes ...
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2}
-      - LANGCHAIN_ENDPOINT=${LANGCHAIN_ENDPOINT}
-      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
-      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT}
-```
-
-E no `.env`:
-```bash
-LANGCHAIN_TRACING_V2=true
-LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
-LANGCHAIN_API_KEY=ls__...
-LANGCHAIN_PROJECT=banco-agil
-```
-
-### Troubleshooting
-
-#### Traces não aparecem
-```bash
-# Verifique se variáveis estão carregadas
-python -c "import os; print(os.getenv('LANGCHAIN_TRACING_V2'))"
-
-# Deve retornar: true
-```
-
-#### Erro de autenticação
-```bash
-# Valide API key
-curl -H "x-api-key: ls__..." https://api.smith.langchain.com/info
-
-# Deve retornar JSON com informações da conta
-```
-
-#### Desativar temporariamente
-```bash
-# No .env, comente ou mude para false
-LANGCHAIN_TRACING_V2=false
-```
 
 ---
 
