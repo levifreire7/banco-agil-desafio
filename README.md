@@ -170,10 +170,11 @@ graph TD;
   - Avalia pedidos baseado em score e regras de negócio
   - Oferece entrevista em caso de rejeição
 - **Regras de Negócio**:
-  - Score 0-299: Limite máximo R$ 1.000
-  - Score 300-599: Limite máximo R$ 5.000
-  - Score 600-799: Limite máximo R$ 15.000
-  - Score 800-1000: Limite máximo R$ 50.000
+  - Score 0-399: Limite máximo R$ 1.000
+  - Score 400-549: Limite máximo R$ 3.000
+  - Score 550-699: Limite máximo R$ 8.000
+  - Score 700-849: Limite máximo R$ 20.000
+  - Score 850-1000: Limite máximo R$ 50.000
 - **Ferramentas**: `consultar_limite_credito`, `solicitar_aumento_limite`, `encerrar_atendimento`
 - **Fluxos de Saída**: `entrevista`, `end`
 
