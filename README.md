@@ -313,7 +313,7 @@ O sistema utiliza um estado centralizado definido em [src/core/state.py](src/cor
 #### 1. Clone o repositório
 ```bash
 git clone <url-do-repositorio>
-cd teste-banco-agil
+cd banco-agil-desafio
 ```
 
 #### 2. Crie um ambiente virtual
@@ -811,7 +811,7 @@ LANGCHAIN_TRACING_V2=false
 ## Estrutura do Projeto
 
 ```
-teste-banco-agil/
+banco-agil-desafio/
 ├── src/                           # Código fonte principal
 │   ├── agents/                    # Agentes especializados
 │   │   ├── base.py               # Classe base com configuração de LLM
@@ -859,8 +859,7 @@ teste-banco-agil/
 ├── docker-compose.yml            # Orquestração Docker
 ├── .env                          # Variáveis de ambiente (não versionado)
 ├── .gitignore
-├── README.md                     # Esta documentação
-└── MIGRATION_GUIDE.md            # Guia de migração de estrutura
+└── README.md                     # Esta documentação
 ```
 
 ---
@@ -869,7 +868,7 @@ teste-banco-agil/
 
 Para facilitar testes, o sistema inclui clientes pré-cadastrados em `data/clientes.csv`:
 
-| CPF | Nome | Data Nascimento | Limite Inicial | Score |
+| cpf | nome | data_nascimento | limite_credito | score |
 |-----|------|----------------|---------------|-------|
 | 12345678901 | João Silva | 1990-05-15 | 5000.00 | 650 |
 | 98765432100 | Maria Santos | 1985-08-20 | 1000.00 | 250 |
@@ -923,34 +922,6 @@ Sistema: Agora que seu score melhorou, posso reanalizar sua solicitação. O que
 
 ---
 
-## Contribuindo
-
-1. Fork o repositório
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
-
-### Padrões de Código
-- Use type hints em todas as funções
-- Docstrings no formato Google Style
-- Testes para toda nova funcionalidade
-- Coverage mínimo de 80%
-
----
-
 ## Licença
 
-Este projeto foi desenvolvido como demonstração técnica para o desafio Banco Ágil.
-
----
-
-## Contato e Suporte
-
-Para dúvidas, sugestões ou problemas:
-- Abra uma issue no repositório
-- Entre em contato via email: [levifreire7@gmail.com]
-
----
-
-**Desenvolvido com LangGraph, LangChain e OpenAI GPT-4**
+Este projeto foi desenvolvido como demonstração técnica para o desafio da T4H.
