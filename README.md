@@ -284,18 +284,6 @@ O sistema utiliza um estado centralizado definido em [src/core/state.py](src/cor
 - Cada mensagem do usuário invoca o grafo e atualiza UI
 - Sidebar exibe informações de autenticação em tempo real
 
-#### **Pytest** (Framework de Testes)
-**Por quê?**
-- Fixtures permitem reutilização de mocks (database, LLM)
-- Parametrize facilita testes de múltiplos cenários
-- Plugins (pytest-cov, pytest-mock) estendem funcionalidades
-- Sintaxe clara e mensagens de erro informativas
-
-**Como se encaixa?**
-- testes cobrindo unidade e integração
-- Mocks de LLM garantem testes determinísticos e rápidos
-- Fixtures em `conftest.py` compartilhadas entre módulos
-
 #### **CSV + Dataclasses** (Persistência)
 **Por quê?**
 - Simplicidade adequada ao escopo do projeto
